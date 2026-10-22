@@ -151,10 +151,10 @@ func (p *Provider) getZones(ctx context.Context) ([]zone, error) {
 }
 
 func findRecord(recs []record, r *libdns.Record) *record {
-	rr, ok := (*r).(libdns.RR)
-	if !ok {
-		return nil // oder Fehlerbehandlung
+	if *r == nil {
+		return nil
 	}
+	rr := (*r).RR()
 	for _, v := range recs {
 		if v.Type == rr.Type && v.Name == rr.Name {
 			return &v
@@ -164,10 +164,10 @@ func findRecord(recs []record, r *libdns.Record) *record {
 }
 
 func findRecordWithValue(recs []record, r *libdns.Record) *record {
-	rr, ok := (*r).(libdns.RR)
-	if !ok {
-		return nil // oder Fehlerbehandlung
+	if *r == nil {
+		return nil
 	}
+	rr := (*r).RR()
 	for _, v := range recs {
 		if v.Type == rr.Type && v.Name == rr.Name && v.Data == rr.Data {
 			return &v
